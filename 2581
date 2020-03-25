@@ -24,6 +24,5 @@ int main() {
 	}
 	if (!sum) cout << "-1\n";
 	else cout << sum << "\n" << min << "\n";
-
 	return 0;
 }
