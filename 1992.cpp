@@ -41,7 +41,7 @@ void quadTree(int sx, int sy, int ex, int ey, char symbol) {
 int main() {
 	init();
 	int n; cin >> n;
-	string nonValue; getline(cin, nonValue); // 개행 버피 빼기
+	string nonValue; getline(cin, nonValue); // 개행 버 빼기
 	for (int i = 0; i < n; i++) 
 		getline(cin, input[i]);
 	/*입력완료*/
@@ -95,10 +95,10 @@ void quadTree(int sx, int sy, int ex, int ey, char symbol) {
 int main() {
 	init();
 	int n; cin >> n;
-	string nonValue; getline(cin, nonValue); // 개행 버피 빼기
+	string nonValue; getline(cin, nonValue); // 개행 버퍼 빼기
 	for (int i = 0; i < n; i++) 
-		getline(cin, input[i]);
-	/*입력완료*/
+		getline(cin, input[i]); // 입력 완료
+	
 	quadTree(0, 0, n - 1, n - 1, input[0][0]);
 	while (!result.empty()) {
 		cout << result.front();
