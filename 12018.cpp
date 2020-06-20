@@ -9,6 +9,7 @@ void init() {
 }
 
 int main() {
+	init();
 	int numSubject, ownMileage; cin >> numSubject >> ownMileage;
 	vector<int> minMileage;
 	for (int i = 0; i < numSubject; ++i) {
@@ -19,13 +20,13 @@ int main() {
 			v.push_back(currMileage);
 		}
 		sort(v.begin(), v.end(), greater<int>());
-		int currMin = (v.size() < limit) ? v.back() : v[limit - 1];
+		int currMin = ((int)v.size() < limit) ? v.back() : v[limit - 1];
 		if (request < limit) { currMin = 1; } // 질문글 보고 추가한 내용
 		minMileage.push_back(currMin);
 	}
 	sort(minMileage.begin(), minMileage.end());
-	int sum = 0, result = 0;
-	for (int i = 0; i < minMileage.size(); ++i) {
+	int result = 0;
+	for (int i = 0; i < (int)minMileage.size(); ++i) {
 		if (ownMileage - minMileage[i] >= 0) {
 			ownMileage -= minMileage[i];
 			result++;
