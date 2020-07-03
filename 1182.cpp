@@ -17,3 +17,44 @@ int main() {
 	printf("%d\n", result);
 	return 0;
 }
+
+
+// 2020-07-04 추가
+// 또다른 풀이
+#include <iostream>
+using namespace std;
+
+int arr[21], n, s, result;
+bool check[21];
+
+void init() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0); cout.tie(0);
+}
+
+void dfs(int index, int count, int limit) {
+	if (count == limit) {
+		int sum = 0;
+		for (int i = 0; i < 21; ++i) {
+			if (check[i]) sum += arr[i];
+		}
+		if (sum == s) result++;
+	}
+	for (int i = index; i < n; ++i) {
+		if (check[i]) continue;
+		check[i] = true;
+		dfs(i, count + 1, limit);
+		check[i] = false;
+	}
+}
+
+int main() {
+	init();
+	cin >> n >> s;
+	for (int i = 0; i < n; ++i) cin >> arr[i];
+
+	for (int i = 1; i <= n; ++i) dfs(0, 0, i);
+	cout << result << "\n";
+	
+	return 0;
+}
