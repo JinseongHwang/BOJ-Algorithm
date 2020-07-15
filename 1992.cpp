@@ -108,7 +108,7 @@ int main() {
 }
 */
 
-// 2020-07-15 추가
+// 2020-07-15 풀이 
 
 #include <iostream>
 #include <algorithm>
