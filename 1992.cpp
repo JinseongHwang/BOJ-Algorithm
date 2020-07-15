@@ -107,3 +107,56 @@ int main() {
 	return 0;
 }
 */
+
+// 2020-07-15 추가
+
+#include <iostream>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+#define MAX 65
+int n, graph[MAX][MAX];
+
+void init() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0); cout.tie(0);
+}
+// start row, start column, end row, end column
+void quadtree(int sr, int sc, int er, int ec) {
+	int symbol = graph[sr][sc]; // 좌상단 값을 symbol(대표값)로 지정
+	for (int i = sr; i <= er; ++i) {
+		for (int j = sc; j <= ec; ++j) {
+			if (sr == er && sc == ec) { // 분할 불가능한 상황
+				cout << symbol; // symbol값을 출력
+				return;
+			}
+			if (graph[i][j] != symbol) { // 분할
+				cout << "(";
+				// 분할을 위해 중간값을 저장
+				int midr = (sr + er) / 2, midc = (sc + ec) / 2;
+				quadtree(sr, sc, midr, midc); // 좌상
+				quadtree(sr, midc + 1, midr, ec); // 우상
+				quadtree(midr + 1, sc, er, midc); // 좌하
+				quadtree(midr + 1, midc + 1, er, ec); // 우하
+				cout << ")";
+				return;
+			}
+		}
+	}
+	cout << symbol; // 분할되지 않았다면 symbol값 출력
+}
+
+int main() {
+	init();
+	cin >> n;
+	string input;
+	for (int i = 0; i < n; ++i) {
+		cin >> input;
+		for (int j = 0; j < n; ++j) graph[i][j] = (input[j] == '0') ? 0 : 1;
+	}
+	quadtree(0, 0, n - 1, n - 1);
+	cout << "\n";
+
+	return 0;
+}
