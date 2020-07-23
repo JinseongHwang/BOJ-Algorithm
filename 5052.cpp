@@ -9,7 +9,6 @@ using namespace std;
 
 // 최대 단어의 개수, 전화번호의 최대 길이이자 숫자는 0부터 9까지 있다.
 const int MAX_WORD = 10010, MAX_LEN = 10;
-char num[MAX_WORD][MAX_LEN]; // 문자열을 저장하는 공간
 
 void init() {
 	ios_base::sync_with_stdio(0);
