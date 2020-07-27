@@ -1,4 +1,5 @@
-// 비효율적인 소스코드
+// 비효율적인 소스코드 (메모리 많이 먹음)
+// 최대힙 사용
 #include <iostream>
 #include <queue>
 #include <functional>
@@ -49,5 +50,33 @@ int main() {
 		cnt++;
 	}
 
+	return 0;
+}
+
+// 효율적인 소스코드
+// 최소힙 사용
+#include <iostream>
+#include <queue>
+#include <functional>
+using namespace std;
+
+void init() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0); cout.tie(0);
+}
+
+int main() {
+	init();
+	int n; cin >> n;
+	priority_queue<int, vector<int>, greater<int> > pq;
+	for (int inp, i = 0; i < n * n; ++i) {
+		cin >> inp;
+		if (pq.size() < n) pq.push(inp);
+		else {
+			if (pq.top() < inp) { pq.pop(); pq.push(inp); }
+		}
+	}
+	cout << pq.top() << '\n';
+	
 	return 0;
 }
