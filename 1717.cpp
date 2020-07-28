@@ -40,3 +40,54 @@ bool find_parent(int a, int b) {
 	if (get_parent(a) == get_parent(b)) return true;
 	else return false;
 }
+
+
+
+// 2020-07-28 추가
+#include <iostream>
+using namespace std;
+
+const int MAX = 1e6 + 1;
+int n, m, parent[MAX];
+
+
+void init() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0); cout.tie(0);
+}
+
+int getParent(int c) { // 재귀 탐색, 같은 값 나올 때까지
+	if (parent[c] == c) return c;
+	return parent[c] = getParent(parent[c]);
+}
+
+void unionParent(int p, int c) {
+	int pp = getParent(p);
+	int cc = getParent(c);
+	pp < cc ? parent[pp] = cc : parent[cc] = pp;
+}
+
+bool hasSameParent(int a, int b) {
+	int ap = getParent(a);
+	int bp = getParent(b);
+	// a의 부모와 b의 부모가 같으면 true
+	return (ap == bp) ? true : false;
+}
+
+int main() {
+	init();
+	cin >> n >> m;
+	for (int i = 0; i <= n; ++i) parent[i] = i;
+
+	while (m--) {
+		int a, b, c; cin >> a >> b >> c;
+		if (a) { // check and print
+			hasSameParent(b, c) ? cout << "YES\n" : cout << "NO\n";
+		}
+		else { // append graph
+			b < c ? unionParent(b, c) : unionParent(c, b);
+		}
+	}
+
+	return 0;
+}
