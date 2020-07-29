@@ -59,3 +59,76 @@ bool find_parent(int a, int b) {
 	if (get_parent(a) == get_parent(b)) return true;
 	else return false;
 }
+
+
+// 2020-07-29 추가
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+const int MAX = 1001;
+int nv, ne, result, cnt = 1;
+int parent[MAX];
+
+typedef struct {
+	int start, end, weight;
+} Edge;
+
+vector<Edge> v;
+
+void init() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0); cout.tie(0);
+}
+
+int getParent(int a) {
+	if (parent[a] == a) return a;
+	return parent[a] = getParent(parent[a]);
+}
+
+void unionParent(int a, int b) {
+	int ap = getParent(a);
+	int bp = getParent(b);
+	ap < bp ? parent[bp] = ap : parent[ap] = bp;
+}
+
+bool hasSameParent(int a, int b) {
+	int ap = getParent(a);
+	int bp = getParent(b);
+	return (ap == bp) ? true : false;
+}
+
+bool compare(Edge& a, Edge& b) {
+	return a.weight < b.weight;
+}
+
+void kruskal() {
+	// 정점 연결하면서 cnt++
+	// cnt == nv 되면 return 하고 result 출력
+	for (int i = 0; i < v.size(); ++i) {
+		if (!hasSameParent(v[i].start, v[i].end)) { // 사이클검사
+			unionParent(v[i].start, v[i].end);
+			result += v[i].weight; // 가중치 합
+			cnt++;
+		}
+		if (nv == cnt) return;
+	}
+}
+
+int main() {
+	init();
+	cin >> nv >> ne;
+	for (int i = 0; i <= nv; ++i) parent[i] = i;
+	for (int i = 0; i < ne; ++i) {
+		int a, b, c; cin >> a >> b >> c;
+		Edge inp = { a,b,c };
+		v.push_back(inp);
+	}
+	sort(v.begin(), v.end(), compare);
+	kruskal();
+	cout << result << '\n';
+
+	return 0;
+}
