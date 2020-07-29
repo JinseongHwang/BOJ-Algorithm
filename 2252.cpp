@@ -43,3 +43,45 @@ int main() {
 
 	return 0;
 }
+
+
+// 2020-07-29 추가
+#include <iostream>
+#include <queue>
+using namespace std;
+
+const int MAX = 32001;
+int n, query, indegree[MAX];
+vector<int> v[MAX];
+queue<int> q;
+
+void init() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0); cout.tie(0);
+}
+
+void topologySort() {
+	for (int i = 1; i <= n; ++i) if (!indegree[i]) q.push(i);
+	for (int i = 1; i <= n; ++i) {
+		int curr = q.front();
+		q.pop();
+		cout << curr << ' ';
+		for (const auto& a : v[curr]) {
+			indegree[a]--;
+			if (!indegree[a]) q.push(a);
+		}
+	}
+}
+
+int main() {
+	init();
+	cin >> n >> query;
+	while (query--) {
+		int a, b; cin >> a >> b;
+		v[a].push_back(b);
+		indegree[b]++;
+	}
+	topologySort();
+
+	return 0;
+}
