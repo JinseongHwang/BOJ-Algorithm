@@ -82,3 +82,76 @@ int main() {
 // unionParent 연산을 수행할 때 마다 그래프에 속해지는 요소의 개수를 미리 저장해두는 방식을 사용하면 훨씬 더 빠르다.
 
 // 아래는 수정을 거친 소스코드이다.
+
+#include <iostream>
+#include <utility>
+#include <algorithm>
+#include <string>
+#include <map>
+using namespace std;
+
+const int MAX = 2e5 + 10;
+int cnt = 1, parent[MAX], s1_id, s2_id, sz[MAX];
+map<string, int> mp; // name, index
+
+void init(int q) {
+	cnt = 1; mp.clear();
+	fill(sz, sz + q * 2 + 1, 1);
+	for (int i = 0; i <= q * 2; ++i) {
+		parent[i] = i;
+	}
+}
+
+int getParent(int a) {
+	if (parent[a] == a) return a;
+	return parent[a] = getParent(parent[a]);
+}
+
+void unionParent(int a, int b) {
+	a = getParent(a);
+	b = getParent(b);
+	if (a > b) {
+		parent[a] = b;
+		sz[b] += sz[a];
+	}
+	else {
+		parent[b] = a;
+		sz[a] += sz[b];
+	}
+}
+
+bool hasSameParent(int a, int b) {
+	a = getParent(a);
+	b = getParent(b);
+	return (a == b) ? true : false;
+}
+
+int main() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0); cout.tie(0);
+
+	int testcase; cin >> testcase;
+	while (testcase--) {
+		int query; cin >> query;
+		init(query);
+		while (query--) {
+			string s1, s2; cin >> s1 >> s2;
+			if (mp.find(s1) == mp.end()) { // 못찾았을경우
+				mp.insert({ s1, cnt }); s1_id = cnt++; // 새로운 정점 삽입
+			}
+			else s1_id = mp.find(s1)->second; // 찾았다면 index만 반환받음
+			if (mp.find(s2) == mp.end()) {
+				mp.insert({ s2, cnt }); s2_id = cnt++;
+			}
+			else s2_id = mp.find(s2)->second;
+
+			if (!hasSameParent(s1_id, s2_id)) { // 서로 다른 그래프에 속해있다면
+				unionParent(s1_id, s2_id); // merge한다.
+			}
+			int symbol = getParent(s1_id);
+			cout << sz[symbol] << '\n';
+		}
+	}
+
+	return 0;
+}
