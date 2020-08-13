@@ -51,3 +51,57 @@ int main() {
 	cout << dist[End] << "\n";
 	return 0;
 }
+
+
+// 2020-08-14 추가
+// 1916 최소비용 구하기
+
+#include <iostream>
+#include <queue>
+#include <functional>
+#include <vector>
+#include <algorithm>
+#include <utility>
+using namespace std;
+
+typedef pair<int, int> pii;
+const int MAX = 1010, INF = 0x7fffffff;
+int V, E, S, dest, dist[MAX];
+vector<pii> graph[MAX];
+priority_queue<pii, vector<pii>, greater<pii> > pq;
+
+void dijkstra() {
+	dist[S] = 0;
+	pq.push(pii(0, S));
+	while (!pq.empty()) {
+		int cost = pq.top().first;
+		int curr = pq.top().second;
+		pq.pop();
+		if (dist[curr] < cost) continue;
+		for (const auto& elem : graph[curr]) {
+			int nxt = elem.first;
+			int ncost = elem.second;
+			if (dist[nxt] > cost + ncost) {
+				dist[nxt] = cost + ncost;
+				pq.push(pii(dist[nxt], nxt));
+			}
+		}
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0); cout.tie(0);
+
+	cin >> V >> E;
+	fill(dist, dist + V + 1, INF);
+	for (int from, to, cost, i = 0; i < E; ++i) {
+		cin >> from >> to >> cost;
+		graph[from].push_back(pii(to, cost));
+	}
+	cin >> S >> dest;
+	dijkstra();
+	cout << dist[dest] << '\n';
+
+	return 0;
+}
