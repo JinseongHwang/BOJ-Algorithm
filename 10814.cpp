@@ -8,7 +8,7 @@ using namespace std;
 typedef struct Info{
 	int age;
 	string name;
-	bool operator<(const Info& nxt) const { return age < nxt.age; } // 정렬 방법 1
+	bool operator<(const Info& nxt) const { return this->age < nxt.age; } // 정렬 방법 1
 } Info;
 
 int main() {
