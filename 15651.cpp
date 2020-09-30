@@ -30,3 +30,29 @@ int main() {
 
 	return 0;
 }
+
+// 2020-10-01 추가
+#include <cstdio>
+using namespace std;
+
+int n, m, arr[10];
+
+void solve(int k) {
+	if (m == k) {
+		for (int i = 0; i < m; ++i) printf("%d ", arr[i]);
+		printf("\n");
+		return;
+	}
+
+	for (int i = 1; i <= n; ++i) {
+		// 중복 조건이 빠진 것이 핵심
+		arr[k] = i;
+		solve(k + 1);
+	}
+}
+
+int main() {
+	scanf("%d %d", &n, &m);
+	solve(0);
+	return 0;
+}
