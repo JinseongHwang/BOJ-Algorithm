@@ -58,3 +58,43 @@ int main() {
 	
 	return 0;
 }
+
+
+// 2020-11-04 추가
+
+// 백트래킹 조합
+// 내 소스인데 훨씬 빠름
+// -> http://boj.kr/57222f5255aa4a9d98e55ae1e0f90838
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int N, S, arr[20], selected[20], result, tmpSum;
+bool isUsed[20];
+
+void solve(int nSelect, int index, int depth) {
+	if (depth == nSelect) {
+		tmpSum = 0;
+		for (int i = 0; i < nSelect; ++i) tmpSum += selected[i];
+		if (tmpSum == S) result++;
+		return;
+	}
+
+	for (int i = index; i < N; ++i) {
+		if (!isUsed[i]) {
+			selected[depth] = arr[i];
+			isUsed[i] = true;
+			solve(nSelect, i + 1, depth + 1);
+			isUsed[i] = false;
+		}
+	}
+}
+
+int main() {
+	scanf("%d %d", &N, &S);
+	for (int i = 0; i < N; ++i) scanf("%d", arr + i);
+	for (int i = 1; i <= N; ++i) solve(i, 0, 0);
+	printf("%d\n", result);
+
+	return 0;
+}
